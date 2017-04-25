@@ -1,0 +1,14 @@
+<div demo-todo>
+  <ul>
+    <li class="item" v-for="(item, index) in $store.getters.listEntries">
+      <span>{{ item }}</span>
+      <button @click="purge(index)">-</button>
+    </li>
+    <li class="adder">
+      <form v-on:submit.prevent="create">
+        <input type="text" v-model="newItem" placeholder="Todo..." />
+        <button type="submit">Add</button>
+      </form>
+    </li>
+  </ul>
+</div>

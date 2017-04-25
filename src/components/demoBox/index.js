@@ -1,11 +1,12 @@
 require('./view.html'); require('./style.scss');
 
 export default {
-  name: 'messager',
+  name: 'demoBox',
   template: '#components-messager',
+  props: ['link'],
   data() {
     return {
-      display: 'Hey from Messager!'
+      target: '_blank'
     };
   }
 };

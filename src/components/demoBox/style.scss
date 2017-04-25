@@ -1,0 +1,9 @@
+$linkColor: darken(#15948b, 14%);
+
+[components-messager] {
+  p {margin:0 0 0.5rem;
+    &:last-child {margin:0;}
+    span {text-transform:lowercase;font-style:italic;}
+    a {color:$linkColor;}
+  }
+}
