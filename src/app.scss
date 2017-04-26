@@ -1,3 +1,5 @@
+// see issue: https://github.com/webpack-contrib/style-loader/issues/55
+
 $assetPath: '/assets';
 $imagePath: '#{$assetPath}/img';
 
@@ -5,6 +7,5 @@ html, body {margin:0;padding:0;width:100%;height:100%;font-family: Arial, Helvet
   * {box-sizing:border-box;}
 }
 
-body {background:url('assets/img/unsplash-mtn.jpg') no-repeat 50% 50%;background-size:cover;}
-//body {background:url('#{$imagePath}/unsplash-mtn.jpg') no-repeat 50% 50%;background-size:cover;}
+body {background:url('#{$imagePath}/unsplash-mtn.jpg') no-repeat 50% 50%;background-size:cover;}
 // body {background:#223;}

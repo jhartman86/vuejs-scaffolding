@@ -12,7 +12,8 @@
     "release-patch": "npm version patch && npm run build && npm run publish-s3",
     "release-minor": "npm version minor && npm run build && npm run publish-s3",
     "release-major": "npm version major && npm run build && npm run publish-s3",
-    "publish-s3": "node ./support/aws-deploy.js"
+    "publish-s3": "node ./support/aws-deploy.js",
+    "deploy": "npm run build && npm run publish-s3"
   },
   "author": "",
   "license": "ISC",
