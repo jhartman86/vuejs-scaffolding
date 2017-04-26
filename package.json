@@ -9,9 +9,10 @@
     "test-watch": "export NODE_ENV=test && ./node_modules/.bin/karma start",
     "preversion": "npm run test",
     "postversion": "git push && git push --tags",
-    "release-patch": "npm version patch",
-    "release-minor": "npm version minor",
-    "release-major": "npm version major"
+    "release-patch": "npm version patch && npm publish-s3",
+    "release-minor": "npm version minor && npm publish-s3",
+    "release-major": "npm version major && npm publish-s3",
+    "publish-s3": "node ./support/aws-deploy.js"
   },
   "author": "",
   "license": "ISC",
@@ -41,13 +42,17 @@
     "modernizr-loader": "1.0.1",
     "node-sass": "4.5.2",
     "raw-loader": "0.5.1",
+    "s3": "^4.4.0",
     "sass-loader": "6.0.3",
     "style-loader": "0.16.1",
-    "vue": "2.2.6",
-    "vue-router": "2.5.2",
-    "vuex": "2.3.1",
     "webpack": "2.4.1",
     "webpack-dev-middleware": "1.10.2",
     "webpack-hot-middleware": "2.18.0"
+  },
+  "dependencies": {
+    "vue": "2.2.6",
+    "vue-router": "2.5.2",
+    "vuex": "2.3.1",
+    "aws-sdk": "2.45.0"
   }
 }
