@@ -80,10 +80,19 @@ const makeTestHtml = new HtmlWebpackPlugin({
   alwaysWriteToDisk: true,
   cache: false,
   inject: false,
-  minify: isDev ? {} : {
+  minify: {
     collapseWhitespace: true, removeComments: true
-  },
-  excludeChunks: ['entry']
+  }
+});
+
+const makeKarmaContext = new HtmlWebpackPlugin({
+  title: `Test :: ${packageJSON.name}`,
+  template: path.resolve(__dirname, './test/context.karma.html'),
+  filename: 'context.karma.html',
+  alwaysWriteToDisk: true,
+  cache: false,
+  inject: false,
+  minify: {}
 });
 
 /**
@@ -164,8 +173,6 @@ module.exports = {
     hints: (isDev || isTest) ? false : 'warning'
   },
   devServer: {
-    // host: '0.0.0.0',
-    // port: 8080,
     hot: isDev,
     inline: isDev,
     clientLogLevel: 'none',
@@ -190,6 +197,7 @@ module.exports.plugins = [
   extractableHtml,
   makeIndexHtml,
   makeTestHtml,
+  makeKarmaContext,
   new HtmlWebpackHarddiskPlugin({
     outputPath: distPath
   }),

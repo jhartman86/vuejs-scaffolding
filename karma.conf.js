@@ -18,6 +18,7 @@ module.exports = (config) => {
     reporters: ['mocha', /*'coverage'*/],
     webpack: webpackConfig,
     webpackMiddleware: webpackConfig.devServer,
+    customContextFile: '_dist/test/context.karma.html',
     client: {
       captureConsole: true,
       clearContext: false,
