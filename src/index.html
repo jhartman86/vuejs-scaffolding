@@ -3,10 +3,12 @@
   <head>
     <meta charset="utf-8">
     <title><%= htmlWebpackPlugin.options.title %></title>
+    <link href="/style.css" rel="stylesheet">
   </head>
   <body>
     <div id="app"></div>
     
 <%= (htmlWebpackPlugin.options.vueTemplates || []).join('\n') %>
+  <script type="text/javascript" src="/entry.js"></script>
   </body>
 </html>

@@ -1,7 +1,11 @@
+// https://cafedev.org/article/2016/12/testing-with-wepack-2-inject-loader-karma-mocha-chai-and-sinon/
+
 // Ensure environment defaults to 'development'
 process.env.NODE_ENV = process.env.NODE_ENV || 'development';
 process.env.HTTP_PORT = process.env.HTTP_PORT || 8080;
 process.env.HTTP_PORTS = process.env.HTTP_PORTS || 4433;
+
+console.log('-- webpack.config environment: ', process.env.NODE_ENV);
 
 const fs = require('fs');
 const path = require('path');
@@ -15,9 +19,11 @@ const HtmlWebpackHarddiskPlugin = require('html-webpack-harddisk-plugin');
 const ExtractableSourcePlugin = require('./support/extractSrcPlugin');
 
 /**
- * Devlopment or something else?
+ * Easy env checking.
  */
-const isDev = process.env.NODE_ENV === 'development';
+const isDev   = process.env.NODE_ENV === 'development';
+const isProd  = process.env.NODE_ENV === 'production';
+const isTest  = process.env.NODE_ENV === 'test';
 
 /**
  * Create text extractor to pull out styles into own file (production only).
@@ -28,7 +34,7 @@ const extractScss = new ExtractTextPlugin('style.css');
  * 'Dist' path for compiled files. Changes depending on whether dev or production,
  * but always nested under ./_dist.
  */
-const distPath = path.resolve('./_dist', isDev ? 'dev' : 'release');
+const distPath = path.resolve('./_dist', (isDev ? 'dev' : (isTest ? 'test' : 'release')));
 
 /**
  * This plugin is responsible for extracting all html templates that are
@@ -56,9 +62,24 @@ const makeIndexHtml = new HtmlWebpackPlugin({
   template: path.resolve(__dirname, './src/index.html'),
   alwaysWriteToDisk: true,
   cache: false,
+  inject: false,
   minify: isDev ? {} : {
     collapseWhitespace: true, removeComments: true
-  }
+  },
+  excludeChunks: ['testBundle']
+});
+
+const makeTestHtml = new HtmlWebpackPlugin({
+  title: `Test :: ${packageJSON.name}`,
+  template: path.resolve(__dirname, './test/test.html'),
+  filename: 'test.html',
+  alwaysWriteToDisk: true,
+  cache: false,
+  inject: false,
+  minify: isDev ? {} : {
+    collapseWhitespace: true, removeComments: true
+  },
+  excludeChunks: ['entry']
 });
 
 /**
@@ -75,10 +96,13 @@ const devtool = isDev ? 'cheap-source-map' : 'source-map';
  */
 module.exports = {
   devtool,
-  entry: isDev ? ['./support/dev-client.js', './src/entry.js'] : './src/entry.js',
+  entry: {
+    entry: isDev ? ['./support/dev-client.js', './src/entry.js'] : './src/entry.js',
+    testBundle: ['./test/manifest.js']
+  },
   output: {
     path: distPath,
-    filename: 'entry.js'
+    filename: '[name].js'
   },
   resolve: {
     alias: {
@@ -108,6 +132,7 @@ module.exports = {
       {
         test: /\.js$/,
         exclude: /node_modules/,
+        include: [path.resolve(__dirname, './src'), path.resolve(__dirname, './test')],
         loader: 'babel-loader',
         query: Object.assign({}, babelRc, {
           cacheDirectory: true
@@ -126,18 +151,18 @@ module.exports = {
     ]
   },
   stats: {
-    chunks: isDev ? false : true,
-    modules: isDev ? false : true,
+    chunks: (isDev || isTest) ? false : true,
+    modules: (isDev || isTest) ? false : true,
     maxModules: 100
   },
   performance: {
-    hints: isDev ? false : 'warning'
+    hints: (isDev || isTest) ? false : 'warning'
   },
   devServer: {
-    host: '0.0.0.0',
-    port: 8080,
-    hot: true,
-    inline: false,
+    // host: '0.0.0.0',
+    // port: 8080,
+    hot: isDev,
+    inline: isDev,
     clientLogLevel: 'none',
     compress: true,
     contentBase: distPath,
@@ -159,10 +184,13 @@ module.exports.plugins = [
   extractScss,
   extractableHtml,
   makeIndexHtml,
-  new HtmlWebpackHarddiskPlugin(),
+  makeTestHtml,
+  new HtmlWebpackHarddiskPlugin({
+    outputPath: distPath
+  }),
   new webpack.DefinePlugin({
     'process.env': {
-      NODE_ENV: JSON.stringify(isDev ? 'development' : 'production'),
+      NODE_ENV: JSON.stringify(process.env.NODE_ENV),
       VERSION: packageJSON.version
     }
   })
@@ -181,7 +209,8 @@ if (isDev) {
 /**
  * Production plugins.
  */
-if (!isDev) {
+if (isProd) {
+  console.log('\n----------\n- Webpack Prod Plugins Enabled \n----------');
   module.exports.plugins = module.exports.plugins.concat([
     // Copy assets to release directory
     new CopyWebpackPlugin([{

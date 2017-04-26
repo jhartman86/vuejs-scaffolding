@@ -41,6 +41,16 @@ app.use(express.static(webpackConfig.devServer.contentBase));
 app.use('/assets', express.static('assets'));
 app.use(devMiddleware);
 app.use(hotMiddleware);
+
+/**
+ * Hit localhost:8080/test to run the tests in the browser. Note, the
+ * bundle request is returned rom webpack in memory.
+ */
+// app.use(express.static(path.resolve(__dirname, '../node_modules/mocha')));
+
+/**
+ * Single page apps should return index.html always.
+ */
 app.get('/*', (req, res) => {
   res.sendFile(`${webpackConfig.devServer.contentBase}/index.html`);
 });
