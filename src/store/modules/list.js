@@ -2,8 +2,10 @@ const ADD = 'ADD';
 const REMOVE = 'REMOVE';
 
 export default {
-  state: {
-    _entries: []
+  state() {
+    return {
+      _entries: []
+    };
   },
 
   mutations: {
