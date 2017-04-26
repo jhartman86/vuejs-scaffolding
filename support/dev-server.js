@@ -47,6 +47,9 @@ app.use(hotMiddleware);
  * bundle request is returned rom webpack in memory.
  */
 // app.use(express.static(path.resolve(__dirname, '../node_modules/mocha')));
+app.get('/*.css', (req, res) => {
+  res.send('/* Served via webpack bundler in development */');
+});
 
 /**
  * Single page apps should return index.html always.

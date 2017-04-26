@@ -2,7 +2,6 @@ require('./app.scss');
 import Vue from 'vue';
 import { makeInstance } from '@/lib/bootstrap';
 
-
 /**
  * Mount the app, specifying which top level component to use.
  */

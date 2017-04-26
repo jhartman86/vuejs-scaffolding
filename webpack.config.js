@@ -28,7 +28,12 @@ const isTest  = process.env.NODE_ENV === 'test';
 /**
  * Create text extractor to pull out styles into own file (production only).
  */
-const extractScss = new ExtractTextPlugin('style.css');
+// const extractScss = new ExtractTextPlugin('style.css');
+const extractScss = new ExtractTextPlugin({
+  filename: '[name].css',
+  allChunks: true,
+  ignoreOrder: true
+});
 
 /**
  * 'Dist' path for compiled files. Changes depending on whether dev or production,
@@ -65,8 +70,7 @@ const makeIndexHtml = new HtmlWebpackPlugin({
   inject: false,
   minify: isDev ? {} : {
     collapseWhitespace: true, removeComments: true
-  },
-  excludeChunks: ['testBundle']
+  }
 });
 
 const makeTestHtml = new HtmlWebpackPlugin({
@@ -98,7 +102,7 @@ module.exports = {
   devtool,
   entry: {
     entry: isDev ? ['./support/dev-client.js', './src/entry.js'] : './src/entry.js',
-    testBundle: ['./test/manifest.js']
+    testBundle: ['./test/bundle.js']
   },
   output: {
     path: distPath,
@@ -124,6 +128,7 @@ module.exports = {
       },
       {
         test: /\.scss$/,
+        exclude: /node_modules/,
         loader: isDev ? ['style-loader', 'css-loader', 'sass-loader'] :
           extractScss.extract({
             use: ['css-loader', 'sass-loader']
