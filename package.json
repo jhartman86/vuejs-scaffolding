@@ -1,6 +1,6 @@
 {
   "name": "web-awesome",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "Easy webpack starter project",
   "scripts": {
     "build": "export NODE_ENV=production && webpack",
@@ -9,9 +9,9 @@
     "test-watch": "export NODE_ENV=test && ./node_modules/.bin/karma start",
     "preversion": "npm run test",
     "postversion": "git push && git push --tags",
-    "release-patch": "npm version patch && npm publish-s3",
-    "release-minor": "npm version minor && npm publish-s3",
-    "release-major": "npm version major && npm publish-s3",
+    "release-patch": "npm version patch && npm run publish-s3",
+    "release-minor": "npm version minor && npm run publish-s3",
+    "release-major": "npm version major && npm run publish-s3",
     "publish-s3": "node ./support/aws-deploy.js"
   },
   "author": "",
