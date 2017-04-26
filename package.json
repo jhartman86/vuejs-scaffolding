@@ -1,6 +1,6 @@
 {
   "name": "web-awesome",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "Easy webpack starter project",
   "scripts": {
     "build": "export NODE_ENV=production && webpack",
