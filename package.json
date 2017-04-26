@@ -8,7 +8,7 @@
     "test": "export NODE_ENV=test && ./node_modules/.bin/karma start --single-run",
     "test-watch": "export NODE_ENV=test && ./node_modules/.bin/karma start",
     "preversion": "npm run test",
-    "postversion": "git push && git push --tags",
+    "postversion-BACKUP": "git push && git push --tags",
     "release-patch": "npm version patch && npm run build && npm run publish-s3",
     "release-minor": "npm version minor && npm run build && npm run publish-s3",
     "release-major": "npm version major && npm run build && npm run publish-s3",
