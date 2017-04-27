@@ -5,8 +5,6 @@ const browsers = [
   'Firefox'
 ];
 
-// expressApp.use(express.static(dirPath('./node_modules/mocha')));
-
 module.exports = (config) => {
   config.set({
     basePath: path.resolve(__dirname, './'),
@@ -34,6 +32,6 @@ module.exports = (config) => {
     colors: true,
     singleRun: true,
     concurrency: Infinity,
-    
+
   });
 };
