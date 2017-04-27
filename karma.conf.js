@@ -1,7 +1,8 @@
 const path = require('path');
 const webpackConfig = require('./webpack.config');
 const browsers = [
-  'Chrome'
+  'Chrome',
+  'Firefox'
 ];
 
 // expressApp.use(express.static(dirPath('./node_modules/mocha')));
@@ -15,7 +16,10 @@ module.exports = (config) => {
     preprocessors: {
       './test/manifest.js': ['webpack']
     },
-    reporters: ['mocha', /*'coverage'*/],
+    reporters: ['mocha', 'coverage'],
+    coverageReporter: {
+      type: 'text-summary'
+    },
     webpack: webpackConfig,
     webpackMiddleware: webpackConfig.devServer,
     customContextFile: '_dist/test/context.karma.html',
@@ -26,6 +30,10 @@ module.exports = (config) => {
         reporter: 'html',
         ui: 'bdd'
       }
-    }
+    },
+    colors: true,
+    singleRun: true,
+    concurrency: Infinity,
+    
   });
 };
