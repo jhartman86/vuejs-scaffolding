@@ -31,7 +31,6 @@ module.exports = (config) => {
     },
     colors: true,
     singleRun: true,
-    concurrency: Infinity,
-
+    concurrency: Infinity
   });
 };
